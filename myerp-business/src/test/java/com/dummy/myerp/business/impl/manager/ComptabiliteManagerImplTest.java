@@ -9,6 +9,7 @@ import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
+import org.junit.jupiter.api.Assertions;
 
 
 public class ComptabiliteManagerImplTest {
@@ -69,6 +70,35 @@ public class ComptabiliteManagerImplTest {
                                                                                  null, new BigDecimal(123),
                                                                                  null));
         manager.checkEcritureComptableUnit(vEcritureComptable);
+    }
+
+    @Test
+    public void checkEcritureComptableUnitRG5isOk() throws Exception {
+        EcritureComptable vEcritureComptable ;
+        vEcritureComptable = new EcritureComptable();
+        vEcritureComptable.setReference("AC-2020/00001");
+        vEcritureComptable.setId(1);
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new Date());
+
+        manager.checkEcritureComptableUnitRG5(vEcritureComptable);
+        Assertions.assertDoesNotThrow(() -> {manager.checkEcritureComptableUnitRG5(vEcritureComptable);});
+
+    }
+
+    //TODO modifier nom méthode pour différencier d'un test normalement ok d'un mauvais
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableUnitRG5IsWrong() throws Exception {
+        EcritureComptable vEcritureComptable ;
+        vEcritureComptable = new EcritureComptable();
+        vEcritureComptable.setReference("PP-2020/00001");
+        vEcritureComptable.setId(1);
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new Date());
+
+        manager.checkEcritureComptableUnitRG5(vEcritureComptable);
+        Assertions.assertThrows(FunctionalException.class, () -> {manager.checkEcritureComptableUnitRG5(vEcritureComptable);});
+
     }
 
 }
