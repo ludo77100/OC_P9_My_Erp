@@ -1,6 +1,8 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -132,8 +134,34 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 "L'écriture comptable doit avoir au moins deux lignes : une ligne au débit et une ligne au crédit.");
         }
 
-        // TODO ===== RG_Compta_5 : Format et contenu de la référence
+        // TODO ===== RG_Compta_5 : Format et contenu de la référence -> FAIT DANS LA METHODE checkEcritureComptableUnitRG5
         // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
+    }
+
+    protected void checkEcritureComptableUnitRG5(EcritureComptable pEcritureComptable) throws FunctionalException {
+
+        // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
+
+        //On récupère la référence qu'on souhaite vérifier
+        String refEcritureComptable = pEcritureComptable.getReference();
+
+        //Une référence est composé comme suit: XX-AAAA/##### ou XX = journal de banque, AAAA = année et ##### = numéro de séquence (unique à chaque journal donc termine par son id de ligne)
+        //Donc on récupère chaque valeur pour ensuite la comparé à la référence
+        //Le but ici est que la méthode construise sa propre référence afin de la comparer à celle en persistance
+
+        String journal = pEcritureComptable.getJournal().getCode();
+        Date date = pEcritureComptable.getDate();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        Integer refInt = pEcritureComptable.getId();
+
+
+        String refComposition = journal + "-" + calendar.get(Calendar.YEAR)+ "/";
+
+        if (!refEcritureComptable.startsWith(refComposition) && refEcritureComptable.endsWith(refInt.toString())) {
+            throw new FunctionalException(
+                    "Le formatage de la référence de l'écriture comptable n'est pas au format XX-AAAA/#####.");
+        }
     }
 
 
