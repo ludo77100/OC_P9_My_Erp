@@ -3,7 +3,9 @@ package com.dummy.myerp.model.bean.comptabilite;
 import java.math.BigDecimal;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -19,6 +21,32 @@ public class EcritureComptableTest {
                                                                     vDebit, vCredit);
         return vRetour;
     }
+
+    private EcritureComptable vEcriture ;
+
+
+
+    /**
+     * before each test initialize the variable
+     */
+    @Before
+    public void initCompatibiliteManagerImpl(){
+        vEcriture = new EcritureComptable();
+
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, "200.50", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "301"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
+    }
+
+    /**
+     * After each test reset the variable vEcriture
+     */
+    @After
+    public void ResetvEcritureComptable(){
+        vEcriture=new EcritureComptable();
+    }
+
 
     @Test
     public void isEquilibree() {
@@ -43,29 +71,11 @@ public class EcritureComptableTest {
 
     @Test
     public void getTotalDebit(){
-
-        EcritureComptable vEcriture;
-        vEcriture = new EcritureComptable();
-
-        vEcriture.getListLigneEcriture().add(this.createLigne(1, "200.50", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "301"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
-
         Assert.assertEquals(vEcriture.getTotalCredit(), BigDecimal.valueOf(33+301+7));
     }
 
     @Test
     public void getTotalCredit() {
-
-        EcritureComptable vEcriture;
-        vEcriture = new EcritureComptable();
-
-        vEcriture.getListLigneEcriture().add(this.createLigne(1, "200.50", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "301"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
-
         Assert.assertEquals(vEcriture.getTotalDebit(), BigDecimal.valueOf(200.50+100.50+40).setScale(2));
     }
 }
