@@ -136,6 +136,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
         // TODO ===== RG_Compta_5 : Format et contenu de la référence -> FAIT DANS LA METHODE checkEcritureComptableUnitRG5
         // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
+            this.checkEcritureComptableUnitRG5(pEcritureComptable);
     }
 
     protected void checkEcritureComptableUnitRG5(EcritureComptable pEcritureComptable) throws FunctionalException {
