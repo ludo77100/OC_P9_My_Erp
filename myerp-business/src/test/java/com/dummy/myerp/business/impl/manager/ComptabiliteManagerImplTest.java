@@ -21,7 +21,7 @@ public class ComptabiliteManagerImplTest {
     private EcritureComptable vEcritureComptable ;
 
     /**
-     * Before each test initialize the variable vEcritureComptable
+     * Before each test initialize object vEcritureComptable
      */
     @Before
     public void initCompatibiliteManagerImpl(){
@@ -39,7 +39,7 @@ public class ComptabiliteManagerImplTest {
     }
 
     /**
-     * After each test reset the variable vEcritureComptable
+     * After each test reset object vEcritureComptable
      */
     @After
     public void ResetvEcritureComptable(){
