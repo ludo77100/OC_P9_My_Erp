@@ -20,6 +20,9 @@ public class ComptabiliteManagerImplTest {
 
     private EcritureComptable vEcritureComptable ;
 
+    /**
+     * Before each test initialize the variable vEcritureComptable
+     */
     @Before
     public void initCompatibiliteManagerImpl(){
         vEcritureComptable = new EcritureComptable();
