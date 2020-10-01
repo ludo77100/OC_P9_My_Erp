@@ -5,6 +5,7 @@ import java.util.List;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
+import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 
 
@@ -82,4 +83,16 @@ public interface ComptabiliteManager {
      * @param pId l'id de l'écriture
      */
     void deleteEcritureComptable(Integer pId);
+
+    SequenceEcritureComptable getSequenceEcritureComptable(String pJournal, Integer pAnnee);
+
+
+    void updateSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable);
+
+    void insertSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable);
+
+    public List<SequenceEcritureComptable> getListSequenceEcritureComptable();
+
+    void deleteSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable);
+
 }

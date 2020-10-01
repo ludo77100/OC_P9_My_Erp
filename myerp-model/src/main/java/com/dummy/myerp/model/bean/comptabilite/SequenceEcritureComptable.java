@@ -12,6 +12,7 @@ public class SequenceEcritureComptable {
     /** La dernière valeur utilisée */
     private Integer derniereValeur;
 
+    private JournalComptable journalComptable ;
     // ==================== Constructeurs ====================
     /**
      * Constructeur
@@ -44,6 +45,9 @@ public class SequenceEcritureComptable {
     public void setDerniereValeur(Integer pDerniereValeur) {
         derniereValeur = pDerniereValeur;
     }
+    public JournalComptable getJournalComptable() {
+        return journalComptable;
+    }
 
 
     // ==================== Méthodes ====================
@@ -56,5 +60,9 @@ public class SequenceEcritureComptable {
             .append(vSEP).append("derniereValeur=").append(derniereValeur)
             .append("}");
         return vStB.toString();
+    }
+
+    public void setJournalComptable(JournalComptable journalComptable) {
+        this.journalComptable = journalComptable ;
     }
 }
