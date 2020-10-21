@@ -10,12 +10,14 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 
 import org.mockito.Mock;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -25,15 +27,15 @@ import java.util.List;
 public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase{
 
     @Mock
-    private ComptabiliteManagerImpl manager;
     private EcritureComptable vEcritureComptable;
     private JournalComptable journalComptable;
+    private ComptabiliteManagerImpl manager;
 
     /**
-     * Before each test initialize the variables
+     * Initialisation de variable avant chaque test
      */
     @Before
-    public void comptabiliteManagerImplSIT_Init(){
+    public void ComptabiliteManagerImplintegrationTest_Init(){
         manager = new ComptabiliteManagerImpl();
         vEcritureComptable = new EcritureComptable();
         journalComptable = new JournalComptable("AC", "Achat");
@@ -42,7 +44,7 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase{
     }
 
     /**
-     * after each test reset the variables
+     * Réinitialisation de variable après chaque test
      */
     @After
     public void ResetvEcritureComptable(){
@@ -51,15 +53,83 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase{
     }
 
     /**
-     * test on DB connection
+     * Test de la connection à la base de données
      * @throws FunctionalException
      */
     @Test
-    public void test1_ConnectioToDB() throws FunctionalException {
+    public void ConnectioToDB() throws FunctionalException {
 
         List<EcritureComptable> ecritureComptableList=manager.getListEcritureComptable();
         Assert.assertNotEquals(ecritureComptableList.size(),null);
 
     }
+
+    /**
+     * Ce test permet de tester l'insertion d'une écriture comptable avec une référence n'existant pas
+     * @throws FunctionalException
+     */
+    @Test
+    public void InsertEcritureComptableWithNewReference() throws FunctionalException {
+        vEcritureComptable.setReference("AC-2020/00088");
+        vEcritureComptable.setLibelle("ref_int_insert_test");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401), null, new BigDecimal(123), null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411), null, null, new BigDecimal(123)));
+        int tailleDeLalisteAvantInsert = manager.getListEcritureComptable().size();
+        manager.insertEcritureComptable(vEcritureComptable);
+        Assert.assertEquals(manager.getListEcritureComptable().size(),tailleDeLalisteAvantInsert + 1);
+        Assert.assertEquals(vEcritureComptable.getReference(),"AC-2020/00088");
+        manager.deleteEcritureComptable(vEcritureComptable.getId());
+
+    }
+
+    /**
+     * Ce test permet de tester l'insertion d'une écriture comptable avec une référence qui existe déjà
+     * @throws FunctionalException
+     */
+    @Test(expected = FunctionalException.class)
+    public void InsertEcritureComptableWithExistingReference() throws FunctionalException {
+
+        journalComptable = new JournalComptable("VE", "Vente");
+        vEcritureComptable.setJournal(journalComptable);
+        vEcritureComptable.setDate(new Date());
+        vEcritureComptable.setReference("VE-2016/00002");
+        vEcritureComptable.setLibelle("CTMA Appli Xxx");
+        manager.insertEcritureComptable(vEcritureComptable);
+
+    }
+
+    /**
+     * Ce test permet de tester la mise à jour d'une ecriture compable
+     * @throws FunctionalException
+     */
+    @Test
+    public void UpdateEcritureComptable() throws FunctionalException {
+
+        EcritureComptable ecritureComptable=manager.getListEcritureComptable().get(0);
+        String ancienLibelle = ecritureComptable.getLibelle();
+        ecritureComptable.setLibelle("nouveau libelle");
+        manager.updateEcritureComptable(ecritureComptable);
+        String nouveauLibelle = manager.getListEcritureComptable().get(0).getLibelle();
+        Assert.assertNotEquals(ancienLibelle,nouveauLibelle);
+        ecritureComptable.setLibelle(ancienLibelle);
+        manager.updateEcritureComptable(ecritureComptable);
+    }
+
+    public void DeleteEcritureComptableWithExistingReference() throws FunctionalException {
+        //TODO
+    }
+
+    public void DeleteEcritureComptableWithNonExistingReference() throws FunctionalException {
+        //TODO
+    }
+
+    public void CheckAllEcritureComptableInDB() throws FunctionalException {
+        //TODO
+    }
+
+
+
+
+
 
 }
