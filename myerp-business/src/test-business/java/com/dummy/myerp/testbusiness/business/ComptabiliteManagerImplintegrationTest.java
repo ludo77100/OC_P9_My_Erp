@@ -11,9 +11,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runner.RunWith;
 
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -24,7 +28,8 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:com/dummy/myerp/business/bootstrapContext.xml"})
-public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase{
+@ExtendWith(MockitoExtension.class)
+public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase {
 
     @Mock
     private ComptabiliteManagerImpl manager;
@@ -36,7 +41,7 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase{
      * Initialisation de variable avant chaque test
      */
     @Before
-    public void ComptabiliteManagerImplintegrationTest_Init(){
+    public void ComptabiliteManagerImplintegrationTest_Init() {
         manager = new ComptabiliteManagerImpl();
         vEcritureComptable = new EcritureComptable();
         journalComptable = new JournalComptable("AC", "Achat");
@@ -48,25 +53,27 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase{
      * Réinitialisation de variable après chaque test
      */
     @After
-    public void ResetvEcritureComptable(){
+    public void ResetvEcritureComptable() {
         journalComptable = new JournalComptable();
-        vEcritureComptable=new EcritureComptable();
+        vEcritureComptable = new EcritureComptable();
     }
 
     /**
      * Test de la connection à la base de données
+     *
      * @throws FunctionalException
      */
     @Test
     public void ConnectioToDB() throws FunctionalException {
 
-        List<EcritureComptable> ecritureComptableList=manager.getListEcritureComptable();
-        Assert.assertNotEquals(ecritureComptableList.size(),null);
+        List<EcritureComptable> ecritureComptableList = manager.getListEcritureComptable();
+        Assert.assertNotEquals(ecritureComptableList.size(), null);
 
     }
 
     /**
      * Ce test permet de tester l'insertion d'une écriture comptable avec une référence n'existant pas
+     *
      * @throws FunctionalException
      */
     @Test
@@ -77,14 +84,15 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase{
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411), null, null, new BigDecimal(123)));
         int tailleDeLalisteAvantInsert = manager.getListEcritureComptable().size();
         manager.insertEcritureComptable(vEcritureComptable);
-        Assert.assertEquals(manager.getListEcritureComptable().size(),tailleDeLalisteAvantInsert + 1);
-        Assert.assertEquals(vEcritureComptable.getReference(),"AC-2020/00088");
+        Assert.assertEquals(manager.getListEcritureComptable().size(), tailleDeLalisteAvantInsert + 1);
+        Assert.assertEquals(vEcritureComptable.getReference(), "AC-2020/00088");
         manager.deleteEcritureComptable(vEcritureComptable.getId());
 
     }
 
     /**
      * Ce test permet de tester l'insertion d'une écriture comptable avec une référence qui existe déjà
+     *
      * @throws FunctionalException
      */
     @Test(expected = FunctionalException.class)
@@ -101,17 +109,18 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase{
 
     /**
      * Ce test permet de tester la mise à jour d'une ecriture compable
+     *
      * @throws FunctionalException
      */
     @Test
     public void UpdateEcritureComptable() throws FunctionalException {
 
-        EcritureComptable ecritureComptable=manager.getListEcritureComptable().get(0);
+        EcritureComptable ecritureComptable = manager.getListEcritureComptable().get(0);
         String ancienLibelle = ecritureComptable.getLibelle();
         ecritureComptable.setLibelle("nouveau libelle");
         manager.updateEcritureComptable(ecritureComptable);
         String nouveauLibelle = manager.getListEcritureComptable().get(0).getLibelle();
-        Assert.assertNotEquals(ancienLibelle,nouveauLibelle);
+        Assert.assertNotEquals(ancienLibelle, nouveauLibelle);
         ecritureComptable.setLibelle(ancienLibelle);
         manager.updateEcritureComptable(ecritureComptable);
     }
@@ -122,23 +131,28 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase{
 
         vEcritureComptable.setReference("AC-2020/52371");
         vEcritureComptable.setLibelle("Test_Delete");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),null, new BigDecimal(123),null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),null, null,new BigDecimal(123)));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401), null, new BigDecimal(123), null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411), null, null, new BigDecimal(123)));
         manager.insertEcritureComptable(vEcritureComptable);
-        EcritureComptable ecritureComptable= manager.getListEcritureComptable().get(manager.getListEcritureComptable().size()-1);
+        EcritureComptable ecritureComptable = manager.getListEcritureComptable().get(manager.getListEcritureComptable().size() - 1);
         int sizeOfList = manager.getListEcritureComptable().size();
         manager.deleteEcritureComptable(vEcritureComptable.getId());
-        Assert.assertEquals(sizeOfList,manager.getListEcritureComptable().size()+1);
+        Assert.assertEquals(sizeOfList, manager.getListEcritureComptable().size() + 1);
     }
 
 
-    public void CheckAllEcritureComptableInDB() throws FunctionalException {
-        //TODO
+    //TODO ne delete pas la sequence donc ne marche q'une fois ...
+    @Test
+    public void AddReference() throws FunctionalException {
+
+        vEcritureComptable.setLibelle("libelle addReference");
+        journalComptable = (new JournalComptable("BQ", "Banque"));
+        vEcritureComptable.setJournal(journalComptable);
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606), null, new BigDecimal(123), null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(706), null, null, new BigDecimal(123)));
+        manager.addReference(vEcritureComptable);
+        Assert.assertEquals(vEcritureComptable.getReference(), "BQ-2020/00001");
+        manager.deleteSequenceEcritureComptable(manager.getSequenceEcritureComptable("BQ", 2020));
     }
-
-
-
-
-
 
 }
