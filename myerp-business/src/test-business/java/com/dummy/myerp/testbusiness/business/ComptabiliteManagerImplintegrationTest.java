@@ -27,9 +27,10 @@ import java.util.List;
 public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase{
 
     @Mock
+    private ComptabiliteManagerImpl manager;
     private EcritureComptable vEcritureComptable;
     private JournalComptable journalComptable;
-    private ComptabiliteManagerImpl manager;
+
 
     /**
      * Initialisation de variable avant chaque test
@@ -115,13 +116,21 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase{
         manager.updateEcritureComptable(ecritureComptable);
     }
 
-    public void DeleteEcritureComptableWithExistingReference() throws FunctionalException {
+    @Test
+    public void DeleteEcritureComptable() throws FunctionalException {
         //TODO
+
+        vEcritureComptable.setReference("AC-2020/52371");
+        vEcritureComptable.setLibelle("Test_Delete");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),null, new BigDecimal(123),null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),null, null,new BigDecimal(123)));
+        manager.insertEcritureComptable(vEcritureComptable);
+        EcritureComptable ecritureComptable= manager.getListEcritureComptable().get(manager.getListEcritureComptable().size()-1);
+        int sizeOfList = manager.getListEcritureComptable().size();
+        manager.deleteEcritureComptable(vEcritureComptable.getId());
+        Assert.assertEquals(sizeOfList,manager.getListEcritureComptable().size()+1);
     }
 
-    public void DeleteEcritureComptableWithNonExistingReference() throws FunctionalException {
-        //TODO
-    }
 
     public void CheckAllEcritureComptableInDB() throws FunctionalException {
         //TODO
