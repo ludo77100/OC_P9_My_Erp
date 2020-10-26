@@ -21,7 +21,7 @@ public class ComptabiliteManagerImplTest {
     private EcritureComptable vEcritureComptable ;
 
     /**
-     * Before each test initialize object vEcritureComptable
+     * Before each test initialize object vEcritureComptable //TODO Traduire en francais
      */
     @Before
     public void initCompatibiliteManagerImpl(){
@@ -39,30 +39,45 @@ public class ComptabiliteManagerImplTest {
     }
 
     /**
-     * After each test reset object vEcritureComptable
+     * After each test reset object vEcritureComptable //TODO traduire en francais
      */
     @After
     public void ResetvEcritureComptable(){
         vEcritureComptable=new EcritureComptable();
     }
 
-
+    //TODO ecrire la javadoc
     @Test
     public void checkEcritureComptableUnit() throws Exception {
+        // ARRANGE
 
+        //ACT
         manager.checkEcritureComptableUnit(vEcritureComptable);
+
+        //ASSERT
         Assertions.assertDoesNotThrow(() -> {manager.checkEcritureComptableUnit(vEcritureComptable);});
     }
 
+    //TODO ecrire la javadoc
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitViolation() throws Exception {
+
+        //ARRANGE
         EcritureComptable vEcritureComptable;
         vEcritureComptable = new EcritureComptable();
+
+        //ACT
         manager.checkEcritureComptableUnit(vEcritureComptable);
+
+        //ASSERT
+        //TODO créer l'assertion
     }
 
+    //TODO ecrire la javadoc
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG2() throws Exception {
+
+        //ARRANGE
         EcritureComptable vEcritureComptable;
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
@@ -74,11 +89,19 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                                                                                  null, null,
                                                                                  new BigDecimal(1234)));
+
+        //ACT
         manager.checkEcritureComptableUnit(vEcritureComptable);
+
+        //ASSERT
+        //TODO créer l'assertion
     }
 
+    //TODO ecrire la javadoc
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG3() throws Exception {
+
+        //ARRANGE
         EcritureComptable vEcritureComptable;
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
@@ -90,20 +113,34 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
                 null));
+
+        //ACT
         manager.checkEcritureComptableUnit(vEcritureComptable);
+
+        //ASSERT
+        //TODO créer l'assertion
     }
 
+    //TODO ecrire la javadoc
     @Test
     public void checkEcritureComptableUnitRG5isOk() throws Exception {
 
+        //ARRANGE
+
+        //ACT
         manager.checkEcritureComptableUnitRG5(vEcritureComptable);
+
+        //ASSERT
         Assertions.assertDoesNotThrow(() -> {manager.checkEcritureComptableUnitRG5(vEcritureComptable);});
 
     }
 
+    //TODO ecrire la javadoc
     //TODO modifier nom méthode pour différencier d'un test normalement ok d'un mauvais
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG5IsWrong() throws Exception {
+
+        //ARRANGE
         EcritureComptable vEcritureComptable ;
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setReference("PP-2020/00001");
@@ -111,9 +148,11 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(new Date());
 
+        //ACT
         manager.checkEcritureComptableUnitRG5(vEcritureComptable);
-        Assertions.assertThrows(FunctionalException.class, () -> {manager.checkEcritureComptableUnitRG5(vEcritureComptable);});
 
+        //ASSERT
+        Assertions.assertThrows(FunctionalException.class, () -> {manager.checkEcritureComptableUnitRG5(vEcritureComptable);});
     }
 
 }
