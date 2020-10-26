@@ -142,8 +142,11 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase {
         Assert.assertEquals(sizeOfList, manager.getListEcritureComptable().size() + 1);
     }
 
-
-    //TODO ne delete pas la sequence donc ne marche q'une fois ...
+    /**
+     * Ce test permet de tester l'ajout d'une référence non existante
+     *
+     * @throws FunctionalException
+     */
     @Test
     public void AddReference() throws FunctionalException {
 
