@@ -88,8 +88,6 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase {
         manager.insertEcritureComptable(vEcritureComptable);
         Assert.assertEquals(manager.getListEcritureComptable().size(), tailleDeLalisteAvantInsert + 1);
         Assert.assertEquals(vEcritureComptable.getReference(), "AC-2020/00088");
-        manager.deleteEcritureComptable(vEcritureComptable.getId());
-
     }
 
     /**
@@ -106,7 +104,6 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase {
         vEcritureComptable.setReference("VE-2016/00002");
         vEcritureComptable.setLibelle("CTMA Appli Xxx");
         manager.insertEcritureComptable(vEcritureComptable);
-
     }
 
     /**
@@ -127,10 +124,13 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase {
         manager.updateEcritureComptable(ecritureComptable);
     }
 
+    /**
+     * Ce test permet de tester la suppression d'une écriture comptable d'une ecriture compable
+     *
+     * @throws FunctionalException
+     */
     @Test
     public void DeleteEcritureComptable() throws FunctionalException {
-        //TODO
-
         vEcritureComptable.setReference("AC-2020/52371");
         vEcritureComptable.setLibelle("Test_Delete");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401), null, new BigDecimal(123), null));
@@ -154,7 +154,6 @@ public class ComptabiliteManagerImplintegrationTest extends BusinessTestCase {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(706), null, null, new BigDecimal(123)));
         manager.addReference(vEcritureComptable);
         Assert.assertEquals(vEcritureComptable.getReference(), "BQ-2020/00001");
-        manager.deleteSequenceEcritureComptable(manager.getSequenceEcritureComptable("BQ", 2020));
     }
 
 }
