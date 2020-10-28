@@ -21,7 +21,7 @@ public class ComptabiliteManagerImplTest {
     private EcritureComptable vEcritureComptable ;
 
     /**
-     * Before each test initialize object vEcritureComptable //TODO Traduire en francais
+     * Initialisation des variables avant chaque tests
      */
     @Before
     public void initCompatibiliteManagerImpl(){
@@ -39,14 +39,20 @@ public class ComptabiliteManagerImplTest {
     }
 
     /**
-     * After each test reset object vEcritureComptable //TODO traduire en francais
+     * Réinitialisation des variables après chaque test
      */
     @After
     public void ResetvEcritureComptable(){
         vEcritureComptable=new EcritureComptable();
     }
 
-    //TODO ecrire la javadoc
+    /**
+     * test de la fonction checkEcritureComptableUnit
+     * entrant:une ecriture comptable (vEcritureComptable)
+     * sortant: on vérifie que l'écriture comptable respecte les règles de gestion
+     * attendu: l'écriture comptable respecte les règles de gestion
+     * @throws Exception
+     */
     @Test
     public void checkEcritureComptableUnit() throws Exception {
         // ARRANGE
@@ -58,7 +64,13 @@ public class ComptabiliteManagerImplTest {
         Assertions.assertDoesNotThrow(() -> {manager.checkEcritureComptableUnit(vEcritureComptable);});
     }
 
-    //TODO ecrire la javadoc
+    /**
+     * test de la fonction checkEcritureComptableUnitViolation
+     * entrant:une ecriture comptable (vEcritureComptable)
+     * sortant: on vérifie que l'écriture comptable respecte les règles de gestion
+     * attendu: l'écriture comptable ne respecte pas les règles de gestion et lève une FunctionalException
+     * @throws Exception
+     */
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitViolation() throws Exception {
 
@@ -70,10 +82,16 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(vEcritureComptable);
 
         //ASSERT
-        //TODO créer l'assertion
+        Assertions.assertThrows(FunctionalException.class, () -> {manager.checkEcritureComptableUnit(vEcritureComptable);});
     }
 
-    //TODO ecrire la javadoc
+    /**
+     * test de la fonction checkEcritureComptableUnitRG2
+     * entrant:une ecriture comptable (vEcritureComptable)
+     * sortant: on vérifie que l'écriture comptable respecte la règle de gestion numéro 2
+     * attendu: l'écriture comptable ne respecte pas la règle de gestion numéro 2 et lève une FunctionalException
+     * @throws Exception
+     */
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG2() throws Exception {
 
@@ -94,10 +112,16 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(vEcritureComptable);
 
         //ASSERT
-        //TODO créer l'assertion
+        Assertions.assertThrows(FunctionalException.class, () -> {manager.checkEcritureComptableUnit(vEcritureComptable);});
     }
 
-    //TODO ecrire la javadoc
+    /**
+     * test de la fonction checkEcritureComptableUnitRG3
+     * entrant:une ecriture comptable (vEcritureComptable)
+     * sortant: on vérifie que l'écriture comptable respecte la règle de gestion numéro 3
+     * attendu: l'écriture comptable ne respecte pas la règle de gestion numéro 3 et lève une FunctionalException
+     * @throws Exception
+     */
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG3() throws Exception {
 
@@ -118,10 +142,16 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(vEcritureComptable);
 
         //ASSERT
-        //TODO créer l'assertion
+        Assertions.assertThrows(FunctionalException.class, () -> {manager.checkEcritureComptableUnit(vEcritureComptable);});
     }
 
-    //TODO ecrire la javadoc
+    /**
+     * test de la fonction checkEcritureComptableUnitRG5isOk
+     * entrant:une ecriture comptable (vEcritureComptable)
+     * sortant: on vérifie que l'écriture comptable respecte la règle de gestion numéro 5
+     * attendu: l'écriture comptable respecte la règle de gestion numéro 5 et ne lève pas de FunctionalException
+     * @throws Exception
+     */
     @Test
     public void checkEcritureComptableUnitRG5isOk() throws Exception {
 
@@ -135,8 +165,13 @@ public class ComptabiliteManagerImplTest {
 
     }
 
-    //TODO ecrire la javadoc
-    //TODO modifier nom méthode pour différencier d'un test normalement ok d'un mauvais
+    /**
+     * test de la fonction checkEcritureComptableUnitRG5IsWrong
+     * entrant:une ecriture comptable (vEcritureComptable)
+     * sortant: on vérifie que l'écriture comptable respecte la règle de gestion numéro 5
+     * attendu: l'écriture comptable ne respecte pas la règle de gestion numéro 5 et lève une FunctionalException
+     * @throws Exception
+     */
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG5IsWrong() throws Exception {
 
@@ -154,5 +189,4 @@ public class ComptabiliteManagerImplTest {
         //ASSERT
         Assertions.assertThrows(FunctionalException.class, () -> {manager.checkEcritureComptableUnitRG5(vEcritureComptable);});
     }
-
 }
