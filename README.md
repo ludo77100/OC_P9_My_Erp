@@ -2,7 +2,6 @@
 
 * TAUX DE COVERAGE du projet : 78%
 
-        
 #### Tests unitaires
 Afin de vérifier le coverage on s'appuie sur jacoco
 les profiles à activer sont :
